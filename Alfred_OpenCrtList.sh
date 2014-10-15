@@ -7,8 +7,10 @@
 
 #!/bin/bash
 # By:fuqihuan
-filename=$(echo {query}|awk -F/ '{print $NF}')
-ip=$(echo ${filename}| awk -F_ '{print $4}')
-port=$(echo ${filename}| awk -F_ '{print $5}')
+
+file={query}
+ip=$(strings ${file} | awk -F= '/Hostname/ {print $2}')
+port=$(echo $((16#$(strings ${file}|awk -F= '/\"\[SSH2\] Port\"/ {print $2}'))))
+
 /Applications/SecureCRT.app/Contents/MacOS/SecureCRT ${ip}:${port} -t
 
